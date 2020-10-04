@@ -10,6 +10,7 @@ def area(a, b, c):
 def test_area():
     assert area(5, 4, 3) == 6.0
     assert round(area(1, 1, 1), 3) == 0.433
+    assert round(area(5, 3, 3), 3) == 4.146
 
 
 def is_triangle(a, b, c):
@@ -21,17 +22,20 @@ def test_is_triangle():
     assert not is_triangle(1, 1, 2)  # because 1 + 1 not bigger then 2
 
 
-def check_positive(value):
-    int_value = int(value)
+def positive_number(value):
+    try:
+        int_value = float(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError("%s is not number" % value)
     if int_value <= 0:
-        raise argparse.ArgumentTypeError("%s is an invalid positive int value" % value)
+        raise argparse.ArgumentTypeError("%s is not positive number" % value)
     return int_value
 
 
 parser = argparse.ArgumentParser(description='This script finds area of triangle')
-parser.add_argument("a", help="first side length", type=check_positive)
-parser.add_argument("b", help="second side length", type=check_positive)
-parser.add_argument("c", help="third side length", type=check_positive)
+parser.add_argument("a", help="first side length", type=positive_number)
+parser.add_argument("b", help="second side length", type=positive_number)
+parser.add_argument("c", help="third side length", type=positive_number)
 
 
 if __name__ == '__main__':
